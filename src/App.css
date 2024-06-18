@@ -1,0 +1,47 @@
+.weatherItem {
+  background-color: lightblue;
+  margin: 20px;
+}
+
+img {
+  height: 100px;
+}
+
+.fav {
+  background-color: yellow;
+}
+
+.containerQuote {
+  display: flex;
+  align-items: center;
+}
+
+.left {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+h2 {
+  margin-top: 0px;
+}
+
+.characterCard {
+  background-color: lightyellow;
+  border: #ffd521 5px solid;
+  border-radius: 20px;
+  margin: 20px auto 20px auto;
+  padding: 20px;
+  max-width: 370px;
+}
+
+.thumbsup {
+  height: 30px;
+  display: block;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.liked {
+  background-color: rgb(145, 235, 145);
+  border: #008b18 5px solid;
+}
