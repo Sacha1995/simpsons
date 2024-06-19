@@ -6,10 +6,15 @@ import Quote from "./Quote";
 class CharacterCard extends Component {
   state = {
     isLiked: false,
+    isClosed: false,
   };
 
   Like = () => {
     this.setState({ isLiked: !this.state.isLiked });
+  };
+
+  Close = () => {
+    this.setState({ isClosed: true });
   };
 
   render() {
@@ -19,9 +24,12 @@ class CharacterCard extends Component {
       <div
         className={`characterCard ${character} ${
           this.state.isLiked ? "liked" : ""
-        }`}
+        } ${this.state.isClosed ? "off" : ""}`}
       >
         <Name name={character} />
+        <p className="close" onClick={this.Close}>
+          X
+        </p>
 
         <div
           className={`containerQuote ${

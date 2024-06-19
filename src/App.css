@@ -32,6 +32,22 @@ h2 {
   margin: 20px auto 20px auto;
   padding: 20px;
   max-width: 370px;
+  transition: all 0.2s ease-in;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  margin: 0px;
+  font-weight: bold;
+  color: #ffd521;
+  cursor: pointer;
+}
+
+.off {
+  display: none;
 }
 
 .thumbsup {
@@ -44,4 +60,21 @@ h2 {
 .liked {
   background-color: rgb(145, 235, 145);
   border: #008b18 5px solid;
+  transition: all 0.2s ease-in;
+}
+
+.btn {
+  background-color: lightyellow;
+  border: #ffd521 2px solid;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+}
+
+.btn:hover {
+  background-color: #ffd521;
+  border: #eec200 2px solid;
+  transition: all 0.2s ease-in;
 }
