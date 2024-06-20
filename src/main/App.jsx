@@ -2,30 +2,28 @@ import axios from "axios";
 import { Component } from "react";
 import "./App.css";
 import Characters from "./Characters/Characters.jsx";
+import Header from "./Header/Header.jsx";
 import Loading from "./Loading.jsx";
-import Search from "./Search/Search.jsx";
 import "./loading.css";
-import TotalFavourites from "./sort/Favourites.jsx";
-import Sort from "./sort/Sort.jsx";
 
 class App extends Component {
-  state = {};
-
-  originalData;
+  state = { searchStr: "Simpson", select: "Original" };
 
   async componentDidMount() {
-    let { data } = await axios.get(
-      `https://thesimpsonsquoteapi.glitch.me/quotes?count=50`
-    );
-    data.forEach((element, index) => {
-      element.id = index + 1;
-      element.fav = false;
-      element.match = false;
-    });
-    console.log(data);
-    this.originalData = [...data];
-    this.setState({ simpsons: data });
-    this.setState({ searchStr: "" });
+    try {
+      let { data } = await axios.get(
+        `https://thesimpsonsquoteapi.glitch.me/quotes?count=50`
+      );
+      data.forEach((element, index) => {
+        element.id = index + 1;
+      });
+      console.log(data);
+      this.setState({ simpsons: data });
+    } catch (e) {
+      this.setState({ error: "API DOWN" }); // it does not update the state
+      console.log(this.state);
+      console.log(this.state.error); // it does show console.log
+    }
   }
 
   toggleFav = (id) => {
@@ -39,59 +37,59 @@ class App extends Component {
     this.setState({ simpsons: simpsons });
   };
 
-  sort = (sortType) => {
-    let input = [...this.state.simpsons];
-    switch (sortType) {
+  onFormEvent = (e) => {
+    this.setState({ [e.target.id]: e.target.value });
+  };
+
+  getFilteredAndSorted = (e) => {
+    const { searchStr, simpsons, select } = this.state;
+    let filtered = [...simpsons];
+
+    // filter by search
+    if (searchStr) {
+      filtered = filtered.filter((item) => {
+        return item.character.toLowerCase().includes(searchStr.toLowerCase());
+      });
+    }
+
+    //sort
+    switch (select) {
       case "AZ":
-        input.sort((a, b) => {
-          if (a.character < b.character) {
-            return -1;
-          }
+        filtered.sort((a, b) => {
           if (a.character > b.character) {
             return 1;
+          } else if (a.character < b.character) {
+            return -1;
           }
           return 0;
         });
-        this.setState({ simpsons: input });
-        break;
-      case "Original":
-        this.setState({ simpsons: [...this.originalData] });
         break;
       case "ZA":
-        input.sort((a, b) => {
-          if (a.character > b.character) {
-            return -1;
-          }
+        filtered.sort((a, b) => {
           if (a.character < b.character) {
             return 1;
+          } else if (a.character > b.character) {
+            return -1;
           }
           return 0;
         });
-        this.setState({ simpsons: input });
         break;
       case "Liked":
-        input.sort((a) => {
+        filtered.sort((a) => {
           if (a.fav) {
             return -1;
           }
           return 0; // gets rid of warning
         });
-        this.setState({ simpsons: input });
+        break;
+      case "Original":
         break;
       default:
-        console.log("nothing happened");
+        console.log("something went wrong with the sorting");
         break;
     }
-  };
 
-  search = (searchStr) => {
-    const simpsons = [...this.originalData];
-    const output = simpsons.filter((item) => {
-      return item.character.toLowerCase().includes(searchStr.toLowerCase());
-    });
-
-    this.setState({ simpsons: output });
-    this.setState({ searchStr: searchStr });
+    return filtered;
   };
 
   onDelete = (id) => {
@@ -105,27 +103,34 @@ class App extends Component {
   };
 
   render() {
-    const { simpsons } = this.state;
+    const { simpsons, error, searchStr } = this.state;
+
+    if (error) {
+      <h1>The API is down, please come back later.</h1>;
+    }
+
     if (!simpsons) {
       return <Loading />;
     }
 
+    const filteredList = this.getFilteredAndSorted();
+
     return (
       <div>
-        <div className="containerHeader">
-          <TotalFavourites characters={simpsons} />
-          <Search searchData={simpsons} search={this.search} />
-          <Sort sort={this.sort} />
-        </div>
-        {this.state.searchstr !== "" && !this.state.simpsons.length && (
+        <Header
+          characters={this.getFilteredAndSorted()}
+          callback={this.onFormEvent}
+          searchStr={searchStr}
+        />
+        <h1>The Simpsons Quotes</h1>
+        {searchStr !== "" && !filteredList.length && (
           <p className="message">There are no matches.</p>
         )}
-        {!this.state.searchStr && !this.state.simpsons.length && (
+        {!searchStr && !filteredList.length && (
           <p className="message">You have deleted all the quotes.</p>
         )}
-        <h1>The Simpsons Quotes</h1>
         <Characters
-          characters={simpsons}
+          characters={this.getFilteredAndSorted()}
           toggleFav={this.toggleFav}
           onDelete={this.onDelete}
         />
