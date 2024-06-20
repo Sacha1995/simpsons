@@ -10,16 +10,14 @@ const Search = ({ callback, searchStr }) => {
   // }
 
   return (
-    <div className="inputBox">
-      <FormElements
-        // ref={this.inputRef}
-        type="text"
-        id="searchStr"
-        callback={callback}
-        placeholder="Search character"
-        value={searchStr}
-      />
-    </div>
+    <FormElements
+      // ref={this.inputRef}
+      type="text"
+      id="searchStr"
+      callback={callback}
+      placeholder="Search character"
+      value={searchStr}
+    />
   );
 };
 

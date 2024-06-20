@@ -4,6 +4,7 @@ import "./App.css";
 import Characters from "./Characters/Characters.jsx";
 import Header from "./Header/Header.jsx";
 import Loading from "./Loading.jsx";
+import "./fonts.css";
 import "./loading.css";
 
 class App extends Component {

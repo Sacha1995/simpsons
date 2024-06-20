@@ -2,7 +2,7 @@ import Character from "./CharacterCard";
 
 const Characters = ({ toggleFav, onDelete, characters }) => {
   return (
-    <div>
+    <div className="containerCards">
       {characters.map((item, index) => {
         return (
           <Character
