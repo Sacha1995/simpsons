@@ -13,7 +13,10 @@ class Image extends Component {
     return (
       <img
         src={
-          alt === "Bart Simpson" || alt === "Homer Simpson"
+          alt === "Bart Simpson" ||
+          alt === "Homer Simpson" ||
+          alt === "Lisa Simpson" ||
+          alt === "Marge Simpson"
             ? this.animation()
             : src
         }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Component } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Characters from "./Characters/Characters.jsx";
 import Header from "./Header/Header.jsx";
@@ -7,41 +7,66 @@ import Loading from "./Loading.jsx";
 import "./fonts.css";
 import "./loading.css";
 
-class App extends Component {
-  state = { searchStr: "Simpson", select: "Original" };
+const App = () => {
+  const [simpsons, setSimpsons] = useState();
+  const [searchStr, setSearchStr] = useState("");
+  const [error, setError] = useState();
+  const [select, setSelect] = useState("Original");
 
-  async componentDidMount() {
+  const onFormEvent = (e) => {
+    setSearchStr(e.target.value);
+  };
+
+  const getApiData = async () => {
     try {
-      let { data } = await axios.get(
+      const { data } = await axios.get(
         `https://thesimpsonsquoteapi.glitch.me/quotes?count=50`
       );
       data.forEach((element, index) => {
         element.id = index + 1;
       });
       console.log(data);
-      this.setState({ simpsons: data });
+      setSimpsons(data);
     } catch (e) {
-      this.setState({ error: "API DOWN" }); // it does not update the state
+      setError("API DOWN");
     }
-  }
+  };
 
-  toggleFav = (id) => {
-    let simpsons = [...this.state.simpsons];
+  useEffect(() => {
+    getApiData();
+  }, []);
 
-    const indexOf = simpsons.findIndex((item) => {
+  const toggleFav = (id) => {
+    const _simpsons = [...simpsons];
+
+    const indexOf = _simpsons.findIndex((item) => {
       return item.id === id;
     });
 
-    simpsons[indexOf].fav = !simpsons[indexOf].fav;
-    this.setState({ simpsons: simpsons });
+    _simpsons[indexOf].fav = !_simpsons[indexOf].fav;
+    setSimpsons(_simpsons);
   };
 
-  onFormEvent = (e) => {
-    this.setState({ [e.target.id]: e.target.value });
+  const onDelete = (id) => {
+    const _simpsons = [...simpsons];
+    const indexof = _simpsons.findIndex((item) => {
+      return item.id === id;
+    });
+
+    _simpsons.splice(indexof, 1);
+    setSimpsons(_simpsons);
   };
 
-  getFilteredAndSorted = (e) => {
-    const { searchStr, simpsons, select } = this.state;
+  // defensive checks
+  if (error) {
+    return <h1>The API is down, please come back later.</h1>;
+  }
+
+  if (!simpsons) {
+    return <Loading />;
+  }
+
+  const getFilteredAndSorted = (e) => {
     let filtered = [...simpsons];
 
     // filter by search
@@ -50,8 +75,7 @@ class App extends Component {
         return item.character.toLowerCase().includes(searchStr.toLowerCase());
       });
     }
-
-    //sort
+    //  sort
     switch (select) {
       case "AZ":
         filtered.sort((a, b) => {
@@ -91,51 +115,29 @@ class App extends Component {
     return filtered;
   };
 
-  onDelete = (id) => {
-    const simpsons = [...this.state.simpsons];
-    const indexof = simpsons.findIndex((item) => {
-      return item.id === id;
-    });
+  const filteredList = getFilteredAndSorted();
 
-    simpsons.splice(indexof, 1);
-    this.setState({ simpsons: simpsons });
-  };
-
-  render() {
-    const { simpsons, error, searchStr } = this.state;
-
-    if (error) {
-      return <h1>The API is down, please come back later.</h1>;
-    }
-
-    if (!simpsons) {
-      return <Loading />;
-    }
-
-    const filteredList = this.getFilteredAndSorted();
-
-    return (
-      <div>
-        <Header
-          characters={this.getFilteredAndSorted()}
-          callback={this.onFormEvent}
-          searchStr={searchStr}
-        />
-        <h1>The Simpsons Quotes</h1>
-        {searchStr !== "" && !filteredList.length && (
-          <p className="message">There are no matches.</p>
-        )}
-        {!searchStr && !filteredList.length && (
-          <p className="message">You have deleted all the quotes.</p>
-        )}
-        <Characters
-          characters={this.getFilteredAndSorted()}
-          toggleFav={this.toggleFav}
-          onDelete={this.onDelete}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <Header
+        characters={getFilteredAndSorted()}
+        callback={onFormEvent}
+        // searchTermRef={searchTermRef}
+      />
+      <h1>The Simpsons Quotes</h1>
+      {searchStr !== "" && !filteredList.length && (
+        <p className="message">There are no matches.</p>
+      )}
+      {!searchStr && !filteredList.length && (
+        <p className="message">You have deleted all the quotes.</p>
+      )}
+      <Characters
+        characters={getFilteredAndSorted()}
+        toggleFav={toggleFav}
+        onDelete={onDelete}
+      />
+    </div>
+  );
+};
 
 export default App;

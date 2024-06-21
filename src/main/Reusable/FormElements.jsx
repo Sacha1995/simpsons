@@ -4,7 +4,7 @@ const FormElements = ({
   id,
   options,
   placeholder,
-  ref,
+  searchTermRef,
   name,
   label,
   value,
@@ -18,7 +18,7 @@ const FormElements = ({
           onInput={callback}
           id={id}
           placeholder={placeholder}
-          ref={ref}
+          ref={searchTermRef}
           value={value}
         />
       );

@@ -1,22 +1,25 @@
+import { useEffect, useRef, useState } from "react";
 import FormElements from "../Reusable/FormElements";
 
-const Search = ({ callback, searchStr }) => {
-  // inputRef = React.createRef();
+const Search = ({ callback }) => {
+  const [isFocussed, setIsFocussed] = useState(false);
+  const searchTermRef = useRef();
 
-  // componentDidMount() {
-  //   if (this.inputRef.current) {
-  //     this.inputRef.current.focus();
-  //   }
-  // }
+  //set focus to searchbar
+  useEffect(() => {
+    if (!isFocussed && searchTermRef && searchTermRef.current) {
+      searchTermRef.current.focus();
+      setIsFocussed(true);
+    }
+  }, [isFocussed]);
 
   return (
     <FormElements
-      // ref={this.inputRef}
+      searchTermRef={searchTermRef}
       type="text"
       id="searchStr"
       callback={callback}
       placeholder="Search character"
-      value={searchStr}
     />
   );
 };
