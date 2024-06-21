@@ -22,8 +22,6 @@ class App extends Component {
       this.setState({ simpsons: data });
     } catch (e) {
       this.setState({ error: "API DOWN" }); // it does not update the state
-      console.log(this.state);
-      console.log(this.state.error); // it does show console.log
     }
   }
 
@@ -107,7 +105,7 @@ class App extends Component {
     const { simpsons, error, searchStr } = this.state;
 
     if (error) {
-      <h1>The API is down, please come back later.</h1>;
+      return <h1>The API is down, please come back later.</h1>;
     }
 
     if (!simpsons) {
