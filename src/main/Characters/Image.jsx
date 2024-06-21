@@ -6,17 +6,24 @@ class Image extends Component {
 
   animation() {
     let gifName = this.state.alt;
-    this.setState({ src: `./${gifName}.gif` });
-    this.setState({ alt: "nothing" });
+    gifName = `./${gifName}.gif`;
+    return gifName;
   }
 
   render() {
-    let { alt } = this.props;
-    if (this.state.alt === "BartSimpson" || "HomerSimpson") {
-      this.animation();
-    }
+    let { alt, src } = this.props;
 
-    return <img src={this.state.src} alt={alt} className={alt} />;
+    return (
+      <img
+        src={
+          this.state.alt === "BartSimpson" || this.state.alt === "HomerSimpson"
+            ? this.animation()
+            : src
+        }
+        alt={alt}
+        className={alt}
+      />
+    );
   }
 }
 
