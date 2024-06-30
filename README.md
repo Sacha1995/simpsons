@@ -1,8 +1,11 @@
-# Getting Started with Create React App
+# The simpsons quotes
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is my first react project and orginally this was built with class based components and then was later modernised with hooks. This project I had lot of fun editing images of the simpsons and it presented me with some intresting challenges that I had to overcome with sorting, ordering and animating the simpsons.
+
+![simpsons](https://github.com/Sacha1995/simpsons/assets/169173663/dc796f97-e7f6-4d46-a9ad-2e14fe3e45ce)
 
 ## Available Scripts
+
 
 In the project directory, you can run:
 
