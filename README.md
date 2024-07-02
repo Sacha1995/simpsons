@@ -2,7 +2,7 @@
 [Redux Toolkit Shop]( https://github.com/Sacha1995/redux-toolbox-shop) | [Disney Classics Game]( https://github.com/Sacha1995/disney) | [Form with validator](https://github.com/Sacha1995/form-validator) | [Weather Website]( https://github.com/Sacha1995/Weather-Website) | [Traffic Light]( https://github.com/Sacha1995/traffic-light) | [Homage Piece]( https://github.com/Sacha1995/thirdspacelearning)
 
 # The simpsons quotes
-[Website](https://simpsonsquotesreact.netlify.app/)
+[Project website](https://simpsonsquotesreact.netlify.app/) | [LinkedIn](https://www.linkedin.com/in/sachauijlen/)
 
 This is my first react project and orginally this was built with class based components and then was later modernised with hooks. This project I had lot of fun editing images of the simpsons and it presented me with some intresting challenges that I had to overcome with sorting, ordering and animating the simpsons.
 
